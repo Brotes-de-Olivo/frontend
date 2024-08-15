@@ -1,7 +1,7 @@
-import {createTheme} from '@mui/material'
+import {createTheme, responsiveFontSizes} from '@mui/material'
 import {MuiButton} from './buttons'
 
-export const theme = createTheme({
+export const lightTheme = createTheme({
   components: {
     MuiButton,
   },
@@ -9,3 +9,5 @@ export const theme = createTheme({
     fontFamily: 'Lato, sans-serif',
   },
 })
+
+export const theme = responsiveFontSizes(lightTheme)

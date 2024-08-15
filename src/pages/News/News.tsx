@@ -1,9 +1,9 @@
 import {Box, Typography} from '@mui/material'
 
-export const Home = () => {
+export const News = () => {
   return (
     <Box>
-      <Typography variant='h1'>Inicio</Typography>
+      <Typography variant='h1'>Avisos</Typography>
     </Box>
   )
 }

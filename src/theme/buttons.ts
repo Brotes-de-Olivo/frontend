@@ -21,6 +21,7 @@ export const MuiButton: MuiButtonType = {
     disableRipple: true,
     sx: {
       borderRadius: RADIUS.lg,
+      textTransform: 'none',
     },
   },
   styleOverrides: {
