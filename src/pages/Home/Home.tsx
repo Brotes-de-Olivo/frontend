@@ -351,7 +351,8 @@ export const Home = () => {
               alignItems: 'center',
               height: '550px',
               position: 'relative',
-              width: '60%',
+              width: '800px',
+              maxWidth: '60%',
             }}
           >
             <Image
