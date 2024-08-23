@@ -13,6 +13,7 @@ export const Router = () => {
           display: 'flex',
           flexDirection: 'column',
           minHeight: `calc(100vh - ${TOPBAR_HEIGHT})`,
+          padding: '0 !important',
         }}
         maxWidth={false}
       >

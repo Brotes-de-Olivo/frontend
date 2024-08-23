@@ -6,16 +6,16 @@ export const BASE = {
 } as const
 
 export const PRIMARY = {
-  L1: '#CDDC5F',
-  L2: '#588BC8',
+  L1: '#588BC8',
+  L2: '#CDDCF5',
   PRIMARY: '#2C5C96',
   D1: '#284576',
   D2: '#0F2140',
 } as const
 
 export const SECONDARY = {
-  L1: '#FFE9EB',
-  L2: '#F3BFC7',
+  L1: '#F3BFC7',
+  L2: '#FFE9EB',
   PRIMARY: '#FFB7B9',
   D1: '#D9778F',
   D2: '#A44460',

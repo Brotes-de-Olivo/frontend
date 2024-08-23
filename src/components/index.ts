@@ -1,3 +1,6 @@
 export * from './Link'
 export * from './Topbar'
 export * from './Footer'
+export * from './Image'
+export * from './Card'
+export * from './PressableTile'
