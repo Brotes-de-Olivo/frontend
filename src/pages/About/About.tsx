@@ -132,10 +132,10 @@ export const About = () => {
             Nuestra Misión
           </Typography>
           <Typography variant='body1'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Brindar a un máximo de 10 niños y niñas entre los 0 y 5 años de edad, que han sido
+            separados de su familia biológica, un hogar transitorio que, dentro del marco de la
+            doctrina de protección integral, reciban una atención individualizada que facilite su
+            desarrollo global como personas.
           </Typography>
         </Box>
       </Box>
@@ -167,10 +167,10 @@ export const About = () => {
             Nuestra Visión
           </Typography>
           <Typography variant='body1'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Lograr la excelencia en nuestra labor, en cuanto a hacer posible el cumplimiento de sus
+            derechos de abrigo, alimentación, salud, educación, recreación, potencializando los
+            intereses, las cualidades, las habilidades y los valores individuales de cada uno de los
+            niños y niñas que atiende nuestra organización.
           </Typography>
         </Box>
 
