@@ -1,7 +1,13 @@
 import {Box, Button, Grid, Typography} from '@mui/material'
 import {useBreakpoint} from '../../hooks/useBreakpoint'
 import {COLORS} from '../../theme/colors'
-import {Card, Image, PressableTile, PressableTileProps} from '../../components'
+import {
+  Card,
+  Image,
+  PressableTile,
+  PressableTileProps,
+  StaggeredBackgroundImage,
+} from '../../components'
 import {Brightness1} from '@mui/icons-material'
 
 const CARDS = [
@@ -270,41 +276,16 @@ export const Home = () => {
           padding: '2rem',
           justifyContent: 'space-evenly',
           alignItems: 'center',
+          width: '100%',
         }}
       >
-        {!isMobile && (
-          <Box
-            sx={{
-              position: 'relative',
-              width: '375px',
-              height: '465px',
-            }}
-          >
-            <Image
-              src='https://via.placeholder.com/375x450'
-              alt='placeholder'
-              sx={{
-                width: '375px',
-                height: '450px',
-                position: 'absolute',
-                borderRadius: '10px',
-              }}
-            />
+        <StaggeredBackgroundImage
+          src='https://via.placeholder.com/375x450'
+          alt='mission'
+          width='375px'
+          height='450px'
+        />
 
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '15px',
-                left: '-15px',
-                width: '375px',
-                height: '450px',
-                backgroundColor: COLORS.SECONDARY.PRIMARY,
-                zIndex: '-1',
-                borderRadius: '10px',
-              }}
-            />
-          </Box>
-        )}
         <Box
           sx={{
             display: 'flex',

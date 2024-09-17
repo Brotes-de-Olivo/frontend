@@ -7,5 +7,11 @@ export interface ImageProps {
 }
 
 export const Image = ({alt, src, sx}: ImageProps) => {
-  return <img src={src} alt={alt} style={sx} />
+  const styles: CSSProperties = {
+    objectFit: 'cover',
+    maxWidth: '100%',
+    ...sx,
+  }
+
+  return <img src={src} alt={alt} style={styles} />
 }
