@@ -49,6 +49,7 @@ export const PressableTile = ({
         borderRadius: 1,
         cursor: 'pointer',
         transition: 'all 0.2s',
+        height: '100%',
         ...variantStyles[variant],
       }}
     >

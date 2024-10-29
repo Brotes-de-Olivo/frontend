@@ -9,10 +9,12 @@ import LightGallery from 'lightgallery/react'
 import './Gallery.css'
 
 import {useCallback, useEffect, useRef, useState} from 'react'
-import {Grid} from '@mui/material'
 import {useBreakpoint} from '../../hooks/useBreakpoint'
+import Masonry, {ResponsiveMasonry} from 'react-responsive-masonry'
+import {Asset} from 'contentful'
+import {Box} from '@mui/material'
 
-interface Image {
+export interface ImageType {
   src: string
   thumb: string
   alt: string
@@ -20,7 +22,7 @@ interface Image {
 
 interface GalleryProps {
   speed: number
-  images: Image[]
+  images: Asset[] | undefined
 }
 
 const thumbnailsPerBreakpoint = {
@@ -29,8 +31,11 @@ const thumbnailsPerBreakpoint = {
   lg: 12,
 }
 
+const LIGHT_GALLERY_LICENSE_KEY = import.meta.env.VITE_LIGHT_GALLERY_LICENSE_KEY
+
 export const Gallery = ({speed, images}: GalleryProps) => {
-  const [thumbnails, setThumbnails] = useState<Image[]>([])
+  const [thumbnails, setThumbnails] = useState<ImageType[]>([])
+  const [lgImages, setLgImages] = useState<ImageType[]>([])
   const {isMobile} = useBreakpoint()
   const [showThumbnails, setShowThumbnails] = useState<number | undefined>()
   const lightGallery = useRef<any>(null)
@@ -46,8 +51,24 @@ export const Gallery = ({speed, images}: GalleryProps) => {
   }
 
   useEffect(() => {
-    if (showThumbnails) {
-      setThumbnails(images.slice(0, showThumbnails))
+    if (showThumbnails && images) {
+      setThumbnails(
+        images.slice(0, showThumbnails).map((image) => ({
+          src: image.fields.file.url,
+          thumb: image.fields.file.url,
+          alt: image.fields.title,
+        }))
+      )
+    }
+
+    if (images) {
+      setLgImages(
+        images.map((image) => ({
+          src: image.fields.file.url,
+          thumb: image.fields.file.url,
+          alt: image.fields.title,
+        }))
+      )
     }
   }, [showThumbnails, images])
 
@@ -60,54 +81,40 @@ export const Gallery = ({speed, images}: GalleryProps) => {
   }, [isMobile])
 
   return (
-    <LightGallery
-      onInit={onInit}
-      plugins={[lgThumbnail, lgZoom, lgHash]}
-      speed={speed}
-      dynamic={true}
-      dynamicEl={images}
-    >
-      {showThumbnails && (
-        <Grid
-          container
-          spacing={1}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '1rem',
-          }}
-        >
-          {thumbnails.map((image, index) => (
-            <Grid
-              key={index}
-              onClick={() => onOpen(index)}
-              sx={{
-                cursor: 'pointer',
-                maxHeight: '200px',
-                overflow: 'hidden',
-                '&:hover': {
-                  opacity: 0.8,
-                },
-              }}
-              item
-              xs={6}
-              sm={4}
-              lg={2}
-            >
-              <img
-                src={image.thumb}
-                alt={image.alt}
-                style={{
-                  objectFit: 'cover',
-                  maxWidth: '100%',
-                  width: '100%',
-                  height: '100%',
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </LightGallery>
+    <Box width='100%'>
+      <LightGallery
+        onInit={onInit}
+        plugins={[lgThumbnail, lgZoom, lgHash]}
+        speed={speed}
+        dynamic={true}
+        dynamicEl={lgImages}
+        licenseKey={LIGHT_GALLERY_LICENSE_KEY}
+      >
+        {showThumbnails && (
+          <ResponsiveMasonry columnsCountBreakPoints={{350: 2, 900: 4, 1200: 5}}>
+            <Masonry gutter='0.5rem'>
+              {thumbnails.map((thumb, index) => (
+                <Box
+                  key={index}
+                  onClick={() => onOpen(index)}
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                      opacity: 0.8,
+                    },
+                  }}
+                >
+                  <img
+                    src={thumb.thumb}
+                    alt={thumb.alt}
+                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                  />
+                </Box>
+              ))}
+            </Masonry>
+          </ResponsiveMasonry>
+        )}
+      </LightGallery>
+    </Box>
   )
 }

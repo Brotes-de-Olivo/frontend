@@ -9,82 +9,33 @@ import {
   StaggeredBackgroundImage,
 } from '../../components'
 import {Brightness1} from '@mui/icons-material'
+import {EntryTypes, useContentful} from '../../hooks'
+import {useState, useEffect} from 'react'
+import {ICartaFields} from 'generated/contentful'
 
-const CARDS = [
-  {
-    title: 'Card 1',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie. ',
-    icon: (
-      <Brightness1
-        sx={{
-          color: COLORS.BASE.WHITE,
-        }}
-      />
-    ),
-    backgroundColor: COLORS.SECONDARY.D1,
-  },
-  {
-    title: 'Card 2',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie. ',
-    icon: (
-      <Brightness1
-        sx={{
-          color: COLORS.BASE.WHITE,
-        }}
-      />
-    ),
-    backgroundColor: COLORS.PRIMARY.L1,
-  },
-  {
-    title: 'Card 3',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie. ',
-    icon: (
-      <Brightness1
-        sx={{
-          color: COLORS.BASE.WHITE,
-        }}
-      />
-    ),
-    backgroundColor: COLORS.SECONDARY.D2,
-  },
-]
+const CARD_COLORS = [COLORS.SECONDARY.D1, COLORS.PRIMARY.L1, COLORS.SECONDARY.D2]
 
-const PRESSABLE_TILES: PressableTileProps[] = [
-  {
-    title: 'Pressable Tile 1',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie.',
-    onClick: () => console.log('Pressable Tile 1 clicked'),
-    variant: 'secondary',
-  },
-  {
-    title: 'Pressable Tile 2',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie.',
-    onClick: () => console.log('Pressable Tile 2 clicked'),
-    variant: 'default',
-  },
-  {
-    title: 'Pressable Tile 3',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie.',
-    onClick: () => console.log('Pressable Tile 3 clicked'),
-    variant: 'default',
-  },
-  {
-    title: 'Pressable Tile 4',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie.',
-    onClick: () => console.log('Pressable Tile 4 clicked'),
-    variant: 'secondary',
-  },
-]
+const ICON_COLORS = [COLORS.SECONDARY.L1, COLORS.PRIMARY.D1, COLORS.SECONDARY.L2]
+
+const getCardColor = (index: number) => CARD_COLORS[index % CARD_COLORS.length]
+
+const getIconColor = (index: number) => ICON_COLORS[index % ICON_COLORS.length]
 
 export const Home = () => {
   const {isMobile} = useBreakpoint()
+  const {getEntry} = useContentful()
+
+  const [entry, setEntry] = useState<EntryTypes['Inicio'] | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const entry = await getEntry('6AkVKYEN9AgGtMBWW0QjO2')
+
+      setEntry(entry as EntryTypes['Inicio'])
+    }
+    fetchData()
+  }, [])
+
   return (
     <>
       <Box
@@ -117,7 +68,7 @@ export const Home = () => {
             }}
           >
             <Typography variant='h3' color={COLORS.BASE.WHITE}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              {entry?.fields.titulo}
             </Typography>
 
             <Typography
@@ -127,10 +78,7 @@ export const Home = () => {
                 textAlign: 'justify',
               }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in
-              eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum
-              nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id
-              rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.
+              {entry?.fields.subtitulo}
             </Typography>
           </Box>
 
@@ -181,7 +129,7 @@ export const Home = () => {
             textAlign: 'center',
           }}
         >
-          Lorem ipsum dolor sit amet
+          {entry?.fields.segundoTitulo}
         </Typography>
 
         <Typography
@@ -191,7 +139,7 @@ export const Home = () => {
             textAlign: 'center',
           }}
         >
-          Lorem ipsum dolor sit amet
+          {entry?.fields.segundoSubtitulo}
         </Typography>
       </Box>
 
@@ -205,13 +153,19 @@ export const Home = () => {
           alignItems: 'center',
         }}
       >
-        {CARDS.map(({description, icon, title, backgroundColor}) => (
+        {entry?.fields.cartas.map(({fields}, index) => (
           <Card
-            key={title}
-            description={description}
-            icon={icon}
-            title={title}
-            backgroundColor={backgroundColor}
+            key={fields.titulo}
+            description={fields.descripcion}
+            icon={
+              <Brightness1
+                sx={{
+                  color: getIconColor(index),
+                }}
+              />
+            }
+            title={fields.titulo}
+            backgroundColor={getCardColor(index)}
           />
         ))}
       </Box>
@@ -243,7 +197,7 @@ export const Home = () => {
               textAlign: isMobile ? 'center' : 'left',
             }}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            {entry?.fields.tercerTitulo}
           </Typography>
         </Box>
 
@@ -264,7 +218,7 @@ export const Home = () => {
               textAlign: isMobile ? 'center' : 'left',
             }}
           >
-            Lorem ipsum dolor sit amet
+            {entry?.fields.tercerSubtitulo}
           </Typography>
         </Box>
       </Box>
@@ -297,13 +251,23 @@ export const Home = () => {
           }}
         >
           <Grid container spacing={2}>
-            {PRESSABLE_TILES.map(({description, onClick, title, variant}) => (
+            {/* {PRESSABLE_TILES.map(({description, onClick, title, variant}) => (
               <Grid item xs={12} sm={6} key={title}>
                 <PressableTile
                   description={description}
                   onClick={onClick}
                   title={title}
                   variant={variant}
+                />
+              </Grid>
+            ))} */}
+            {entry?.fields.cartasInteractivas.map(({fields}) => (
+              <Grid item xs={12} sm={6} key={fields.titulo}>
+                <PressableTile
+                  description={fields.descripcion}
+                  onClick={window.open.bind(null, fields.link)}
+                  title={fields.titulo}
+                  variant={fields.variante}
                 />
               </Grid>
             ))}
@@ -369,12 +333,11 @@ export const Home = () => {
               }}
             >
               <Typography variant='h3' color={COLORS.BASE.BLACK}>
-                Lorem ipsum dolor sit amet
+                {entry?.fields.tituloAnuncio}
               </Typography>
 
               <Typography variant='body1' color={COLORS.BASE.BLACK}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut imperdiet justo et nulla
-                placerat, eu dignissim nibh volutpat. Proin eleifend ut leo vitae molestie. 
+                {entry?.fields.descripcionAnuncio}
               </Typography>
 
               <Button variant='contained' color='secondary'>
