@@ -10,8 +10,6 @@ export const useBreakpoint = () => {
 
   useEffect(() => {
     const setResponsiveness = () => {
-      if (!window) return
-
       if (window.innerWidth < BREAKPOINTS_VALUE.desktop) {
         setIsMobile(true)
       } else {
@@ -30,8 +28,6 @@ export const useBreakpoint = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (!window) return
-
       setScreenWidth(window.innerWidth)
     }
 
