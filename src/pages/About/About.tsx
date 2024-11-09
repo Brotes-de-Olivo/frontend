@@ -1,4 +1,4 @@
-import {Box, Typography, Button, Grid, List, ListItem} from '@mui/material'
+import {Box, Typography, Button, Grid, List, ListItem, CircularProgress} from '@mui/material'
 import {COLORS} from '../../theme/colors'
 import {Gallery, StaggeredBackgroundImage} from '../../components'
 import {EntryTypes, useBreakpoint, useContentful} from '../../hooks'
@@ -9,6 +9,7 @@ export const About = () => {
   const {getEntry} = useContentful()
   const [entry, setEntry] = useState<EntryTypes['SobreNosotros'] | null>(null)
   const [entryGallery, setEntryGallery] = useState<EntryTypes['Gallery'] | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,9 +18,26 @@ export const About = () => {
 
       setEntry(entry as EntryTypes['SobreNosotros'])
       setEntryGallery(entryGallery as EntryTypes['Gallery'])
+
+      setLoading(false)
     }
     fetchData()
   }, [])
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 'calc(100vh - 64px)',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
 
   return (
     <Box
@@ -79,6 +97,9 @@ export const About = () => {
           alt='mission'
           width='314px'
           height='377px'
+          sx={{
+            marginBottom: isMobile ? '2rem' : '0',
+          }}
         />
 
         <Box
@@ -87,7 +108,7 @@ export const About = () => {
             flexDirection: 'column',
             gap: '1rem',
             maxWidth: '700px',
-            width: '50%',
+            width: isMobile ? '100%' : '50%',
           }}
         >
           <Typography
@@ -118,7 +139,7 @@ export const About = () => {
             flexDirection: 'column',
             gap: '1rem',
             maxWidth: '700px',
-            width: '50%',
+            width: isMobile ? '100%' : '50%',
           }}
         >
           <Typography
@@ -172,7 +193,7 @@ export const About = () => {
       {/* Services Section */}
       <Box
         sx={{
-          padding: '3rem',
+          padding: isMobile ? '2rem' : '8rem',
           display: 'flex',
           flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-around',

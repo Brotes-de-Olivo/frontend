@@ -5,6 +5,7 @@ import {
   ICartaFields,
   ICartaInteractivaFields,
   IGalleryFields,
+  IAnuncioFields,
 } from '../generated/contentful'
 
 export interface EntryTypes {
@@ -13,10 +14,20 @@ export interface EntryTypes {
   Carta: Entry<ICartaFields>
   CartaInteractiva: Entry<ICartaInteractivaFields>
   Gallery: Entry<IGalleryFields>
+  Anuncio: Entry<IAnuncioFields>
+}
+
+export interface CollectionTypes {
+  Inicio: Entry<IPaginaPrincipalFields>[]
+  SobreNosotros: Entry<ISobreNosotrosFields>[]
+  Carta: Entry<ICartaFields>[]
+  CartaInteractiva: Entry<ICartaInteractivaFields>[]
+  Gallery: Entry<IGalleryFields>[]
+  Anuncio: Entry<IAnuncioFields>[]
 }
 
 type ContentTypes = {
-  [key in keyof EntryTypes]: EntryTypes[key]
+  anuncio: IAnuncioFields
 }
 
 export const ORDER_CRITERIA = {
