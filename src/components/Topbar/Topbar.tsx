@@ -120,6 +120,19 @@ export const Topbar = () => {
                     </Button>
                   </Link>
                 ))}
+
+                <Link key={ROUTES.contact} href={ROUTES.contact}>
+                  <Button
+                    variant='text'
+                    sx={{
+                      color: COLORS.BASE.DARK_GRAY,
+                      fontSize: '18px',
+                      textTransform: 'none',
+                    }}
+                  >
+                    Contáctenos
+                  </Button>
+                </Link>
               </Box>
             </Drawer>
           </>

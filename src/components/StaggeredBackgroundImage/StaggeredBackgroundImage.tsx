@@ -1,4 +1,4 @@
-import {Box} from '@mui/material'
+import {Box, SxProps} from '@mui/material'
 import {COLORS} from '../../theme/colors'
 import {Image} from '../Image'
 
@@ -9,6 +9,7 @@ export const StaggeredBackgroundImage = ({
   height,
   backgroundPosition = 'left',
   backgroundColor = COLORS.SECONDARY.PRIMARY,
+  sx,
 }: {
   src: string
   alt: string
@@ -16,6 +17,7 @@ export const StaggeredBackgroundImage = ({
   height: string
   backgroundPosition?: 'left' | 'right'
   backgroundColor?: string
+  sx?: SxProps
 }) => {
   return (
     <Box
@@ -26,6 +28,7 @@ export const StaggeredBackgroundImage = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        ...sx,
       }}
     >
       <Image

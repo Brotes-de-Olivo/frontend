@@ -2,22 +2,25 @@ import {EmailOutlined, LocalPhoneOutlined, PermIdentityOutlined} from '@mui/icon
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   FormControl,
-  FormHelperText,
   InputAdornment,
   TextField,
   Typography,
 } from '@mui/material'
 import {Image, Link} from 'components'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {COLORS} from 'theme/colors'
 import * as z from 'zod'
-import {APIProvider, Map} from '@vis.gl/react-google-maps'
-import Waze from './waze.webp'
+import Waze from 'assets/waze.webp'
 import {RADIUS} from 'theme/radius'
+import {SEND_EMAIL} from 'api'
+import {useMutation} from '@apollo/client'
+import toast from 'react-hot-toast'
+import {useBreakpoint} from 'hooks'
 
-const VITE_MAPS_API_KEY = import.meta.env.VITE_MAPS_API_KEY
+const CONTACT_NUMBER = '+506 2240 8655'
 
 const ContactSchema = z.object({
   name: z.string().min(2, 'El nombre es requerido').max(50, 'El nombre es muy largo'),
@@ -57,11 +60,31 @@ const INITIAL_FORM: ContactProps = {
 export const Contact = () => {
   const [form, setForm] = useState<ContactProps>(INITIAL_FORM)
   const [errors, setErrors] = useState<ContactErrors>()
+  const [sendEmail, {loading}] = useMutation(SEND_EMAIL)
+  const [validForm, setValidForm] = useState(false)
+  const {isMobile} = useBreakpoint()
 
   const handleSend = () => {
     try {
       const data = ContactSchema.parse(form)
-      console.log(data)
+
+      sendEmail({
+        variables: {
+          name: data.name,
+          lastName: data.lastName,
+          email: data.email,
+          phoneNo: data.phoneNo,
+          message: data.message,
+        },
+      })
+        .then(() => {
+          setForm(INITIAL_FORM)
+          toast.success('Correo enviado correctamente')
+          setErrors(undefined)
+        })
+        .catch((error) => {
+          toast.error('Error al enviar el correo')
+        })
     } catch (error) {
       if (error instanceof z.ZodError) {
         setErrors(error.formErrors.fieldErrors)
@@ -69,12 +92,41 @@ export const Contact = () => {
     }
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target
+
+    try {
+      ContactSchema.parse({...form, [name]: value})
+      setErrors({...errors, [name]: undefined})
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors({...errors, [name]: error.formErrors.fieldErrors[name]})
+      }
+    }
+
+    setForm({...form, [name]: value})
+  }
+
+  useEffect(() => {
+    try {
+      ContactSchema.parse(form)
+      setErrors(undefined)
+      setValidForm(true)
+    } catch (error) {
+      setValidForm(false)
+    }
+  }, [form])
+
+  const handleWazeClick = () => {
+    window.open('https://ul.waze.com/ul?preview_venue_id=180813924.1808335845.3976015&navigate=yes')
+  }
+
   return (
     <>
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 2,
@@ -87,7 +139,7 @@ export const Contact = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '50%',
+            width: isMobile ? '100%' : '50%',
             height: '100%',
           }}
         >
@@ -103,7 +155,7 @@ export const Contact = () => {
 
         <Box
           sx={{
-            width: '50%',
+            width: isMobile ? '100%' : '50%',
           }}
         >
           <Typography
@@ -142,7 +194,7 @@ export const Contact = () => {
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'space-between',
                 gap: 2,
               }}
@@ -152,7 +204,7 @@ export const Contact = () => {
                   id='name'
                   name='name'
                   value={form.name}
-                  onChange={(e) => setForm({...form, name: e.target.value})}
+                  onChange={handleInputChange}
                   error={Boolean(errors?.name)}
                   helperText={errors?.name}
                   label='Nombre'
@@ -173,7 +225,7 @@ export const Contact = () => {
                   id='lastName'
                   name='lastName'
                   value={form.lastName}
-                  onChange={(e) => setForm({...form, lastName: e.target.value})}
+                  onChange={handleInputChange}
                   error={Boolean(errors?.lastName)}
                   helperText={errors?.lastName}
                   label='Apellido'
@@ -195,7 +247,7 @@ export const Contact = () => {
                 id='email'
                 name='email'
                 value={form.email}
-                onChange={(e) => setForm({...form, email: e.target.value})}
+                onChange={handleInputChange}
                 error={Boolean(errors?.email)}
                 helperText={errors?.email}
                 label='Correo'
@@ -216,7 +268,7 @@ export const Contact = () => {
                 id='phoneNo'
                 name='phoneNo'
                 value={form.phoneNo}
-                onChange={(e) => setForm({...form, phoneNo: e.target.value})}
+                onChange={handleInputChange}
                 error={Boolean(errors?.phoneNo)}
                 helperText={errors?.phoneNo}
                 label='Teléfono'
@@ -237,7 +289,7 @@ export const Contact = () => {
                 id='message'
                 name='message'
                 value={form.message}
-                onChange={(e) => setForm({...form, message: e.target.value})}
+                onChange={handleInputChange}
                 error={Boolean(errors?.message)}
                 helperText={errors?.message}
                 label='Mensaje'
@@ -246,17 +298,29 @@ export const Contact = () => {
               />
             </FormControl>
 
-            <Button
-              variant='contained'
-              color='primary'
+            <Box
               sx={{
-                borderRadius: 'lg',
-                textTransform: 'none',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                gap: 2,
               }}
-              onClick={handleSend}
             >
-              Enviar
-            </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                sx={{
+                  borderRadius: 'lg',
+                  textTransform: 'none',
+                }}
+                onClick={handleSend}
+                disabled={loading || !validForm}
+                endIcon={loading ? <CircularProgress size={20} /> : undefined}
+              >
+                {loading ? 'Enviando' : 'Enviar'}
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -264,7 +328,7 @@ export const Contact = () => {
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
           width: '100%',
           justifyContent: 'space-around ',
@@ -277,7 +341,7 @@ export const Contact = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            width: '50%',
+            width: isMobile ? '100%' : '50%',
             height: '100%',
             gap: 8,
           }}
@@ -294,6 +358,8 @@ export const Contact = () => {
               padding: 2,
               borderRadius: RADIUS.md,
               backgroundColor: COLORS.SECONDARY.L2,
+              justifyContent: 'space-evenly',
+              height: '200px',
             }}
           >
             <Typography variant='body1' sx={{color: COLORS.BASE.BLACK, fontWeight: 'medium'}}>
@@ -306,6 +372,7 @@ export const Contact = () => {
                 width: 'fit-content',
                 textTransform: 'none',
               }}
+              onClick={handleWazeClick}
             >
               Indicaciones
               <Image
@@ -324,12 +391,54 @@ export const Contact = () => {
         <Box>
           <iframe
             src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15718.475428334636!2d-84.0667068!3d9.9656346!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e4f3cbc1a669%3A0xe629d10b912182c1!2sHogar%20Infantil%20Brotes%20de%20Olivo!5e0!3m2!1sen!2scr!4v1730171802656!5m2!1sen!2scr'
-            width='600'
+            width={isMobile ? '100%' : '650'}
             height='450'
             style={{border: 0}}
             loading='lazy'
           ></iframe>
         </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 2,
+          padding: 2,
+          paddingBottom: 8,
+        }}
+      >
+        <Typography
+          variant='h2'
+          sx={{
+            color: COLORS.PRIMARY.D1,
+            fontWeight: 'medium',
+          }}
+        >
+          Llámenos directamente
+        </Typography>
+
+        <Typography
+          variant='body1'
+          sx={{
+            color: COLORS.BASE.DARK_GRAY,
+            fontWeight: 'medium',
+          }}
+        >
+          Estamos disponibles de Lunes a Viernes de 8:00 a.m. a 5:00 p.m.
+        </Typography>
+
+        <Typography
+          variant='body1'
+          sx={{
+            color: COLORS.BASE.DARK_GRAY,
+            fontWeight: 'medium',
+          }}
+        >
+          <Link href='tel:+50622408655'>+506 2240 8655</Link>
+        </Typography>
       </Box>
     </>
   )

@@ -3,6 +3,77 @@
 import { Asset, Entry } from "contentful";
 import { Document } from "@contentful/rich-text-types";
 
+export interface IAnuncioFields {
+  /** Autor */
+  autor: IAutor;
+
+  /** Título */
+  titulo: string;
+
+  /** Descripcion */
+  descripcion?: string | undefined;
+
+  /** activo */
+  activo: boolean;
+
+  /** Fecha de evento */
+  fechaDeEvento: string;
+
+  /** ubicacion */
+  ubicacion?: string | undefined;
+
+  /** imagen */
+  imagen: Asset;
+}
+
+export interface IAnuncio extends Entry<IAnuncioFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "anuncio";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
+export interface IAutorFields {
+  /** Nombre */
+  nombre: string;
+
+  /** Apellido */
+  apellido: string;
+
+  /** Cargo */
+  cargo?: string | undefined;
+
+  /** Imagen de perfil */
+  imagenDePerfil: Asset;
+}
+
+export interface IAutor extends Entry<IAutorFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "autor";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
 export interface ICartaFields {
   /** Titulo */
   titulo: string;
@@ -178,6 +249,8 @@ export interface ISobreNosotros extends Entry<ISobreNosotrosFields> {
 }
 
 export type CONTENT_TYPE =
+  | "anuncio"
+  | "autor"
   | "carta"
   | "cartaInteractiva"
   | "gallery"

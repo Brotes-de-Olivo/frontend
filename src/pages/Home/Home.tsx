@@ -1,4 +1,4 @@
-import {Box, Button, Grid, Typography} from '@mui/material'
+import {Box, Button, CircularProgress, Grid, Typography} from '@mui/material'
 import {useBreakpoint} from '../../hooks/useBreakpoint'
 import {COLORS} from '../../theme/colors'
 import {
@@ -11,7 +11,6 @@ import {
 import {Brightness1} from '@mui/icons-material'
 import {EntryTypes, useContentful} from '../../hooks'
 import {useState, useEffect} from 'react'
-import {ICartaFields} from 'generated/contentful'
 
 const CARD_COLORS = [COLORS.SECONDARY.D1, COLORS.PRIMARY.L1, COLORS.SECONDARY.D2]
 
@@ -24,6 +23,7 @@ const getIconColor = (index: number) => ICON_COLORS[index % ICON_COLORS.length]
 export const Home = () => {
   const {isMobile} = useBreakpoint()
   const {getEntry} = useContentful()
+  const [loading, setLoading] = useState(true)
 
   const [entry, setEntry] = useState<EntryTypes['Inicio'] | null>(null)
 
@@ -32,9 +32,25 @@ export const Home = () => {
       const entry = await getEntry('6AkVKYEN9AgGtMBWW0QjO2')
 
       setEntry(entry as EntryTypes['Inicio'])
+      setLoading(false)
     }
     fetchData()
   }, [])
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 'calc(100vh - 64px)',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
 
   return (
     <>
@@ -44,9 +60,9 @@ export const Home = () => {
           flexDirection: isMobile ? 'column' : 'row',
           gap: '2rem',
           minHeight: '80vh',
-          padding: isMobile ? '2rem' : '4rem',
+          padding: isMobile ? '0' : '8rem',
           backgroundColor: COLORS.PRIMARY.D1,
-          justifyContent: 'space-around',
+          justifyContent: 'space-evenly',
         }}
       >
         <Box
@@ -55,7 +71,7 @@ export const Home = () => {
             flexDirection: 'column',
             gap: '3rem',
             padding: isMobile ? '2rem' : '0',
-            width: isMobile ? '100%' : '50%',
+            width: isMobile ? '100%' : 'unset ',
             justifyContent: 'center',
             alignItems: 'flex-start',
           }}
@@ -65,6 +81,7 @@ export const Home = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
+              maxWidth: '900px',
             }}
           >
             <Typography variant='h3' color={COLORS.BASE.WHITE}>
@@ -83,7 +100,7 @@ export const Home = () => {
           </Box>
 
           <Button variant='contained' color='secondary'>
-            Learn More
+            Conoce más sobre nosotros
           </Button>
         </Box>
 
@@ -93,7 +110,7 @@ export const Home = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
-              width: '50%',
+              width: '30%',
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -236,8 +253,11 @@ export const Home = () => {
         <StaggeredBackgroundImage
           src='https://via.placeholder.com/375x450'
           alt='mission'
-          width='375px'
+          width={isMobile ? '100%' : '375px'}
           height='450px'
+          sx={{
+            marginBottom: isMobile ? '2rem' : '0',
+          }}
         />
 
         <Box
