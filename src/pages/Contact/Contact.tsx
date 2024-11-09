@@ -82,7 +82,7 @@ export const Contact = () => {
           toast.success('Correo enviado correctamente')
           setErrors(undefined)
         })
-        .catch((error) => {
+        .catch(() => {
           toast.error('Error al enviar el correo')
         })
     } catch (error) {

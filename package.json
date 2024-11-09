@@ -16,6 +16,7 @@
     "codegen:contentful": "contentful-typescript-codegen --output src/generated/contentful.ts"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.9",
     "@contentful/rich-text-react-renderer": "^15.22.11",
     "@emotion/react": "11.13.0",
     "@emotion/styled": "11.13.0",
@@ -38,6 +39,7 @@
     "prettier": "3.3.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-responsive-masonry": "2.3.0",
     "react-router-dom": "6.26.0",
     "sirv": "2.0.4",
