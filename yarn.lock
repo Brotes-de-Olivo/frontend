@@ -2151,6 +2151,11 @@ graphql-tag@^2.12.6:
   dependencies:
     tslib "^2.1.0"
 
+graphql@^16.9.0:
+  version "16.9.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.9.0.tgz#1c310e63f16a49ce1fbb230bd0a000e99f6f115f"
+  integrity sha512-GGTKBX4SD7Wdb8mqeDLni2oaRGYQWjWHGKPQ24ZMnUtKfcsVoiv4uX8+LJr1K6U5VW2Lu1BwJnj7uiori0YtRw==
+
 hard-rejection@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/hard-rejection/-/hard-rejection-2.1.0.tgz#1c6eda5c1685c63942766d79bb40ae773cecd883"
