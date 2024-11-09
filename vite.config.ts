@@ -20,9 +20,4 @@ export default defineConfig({
       utils: '/src/utils',
     },
   },
-  build: {
-    rollupOptions: {
-      external: ['graphql'],
-    },
-  },
 })
