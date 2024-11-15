@@ -1,16 +1,11 @@
 import {Box, Button, CircularProgress, Grid, Typography} from '@mui/material'
 import {useBreakpoint} from '../../hooks/useBreakpoint'
 import {COLORS} from '../../theme/colors'
-import {
-  Card,
-  Image,
-  PressableTile,
-  PressableTileProps,
-  StaggeredBackgroundImage,
-} from '../../components'
+import {Card, Image, Link, PressableTile, StaggeredBackgroundImage} from '../../components'
 import {Brightness1} from '@mui/icons-material'
 import {EntryTypes, useContentful} from '../../hooks'
 import {useState, useEffect} from 'react'
+import {useTranslation} from 'react-i18next'
 
 const CARD_COLORS = [COLORS.SECONDARY.D1, COLORS.PRIMARY.L1, COLORS.SECONDARY.D2]
 
@@ -24,18 +19,22 @@ export const Home = () => {
   const {isMobile} = useBreakpoint()
   const {getEntry} = useContentful()
   const [loading, setLoading] = useState(true)
+  const {t, i18n} = useTranslation()
 
   const [entry, setEntry] = useState<EntryTypes['Inicio'] | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
-      const entry = await getEntry('6AkVKYEN9AgGtMBWW0QjO2')
+      const entry = await getEntry({
+        entryId: '6AkVKYEN9AgGtMBWW0QjO2',
+        locale: i18n.language,
+      })
 
       setEntry(entry as EntryTypes['Inicio'])
       setLoading(false)
     }
     fetchData()
-  }, [])
+  }, [getEntry, i18n.language])
 
   if (loading) {
     return (
@@ -99,9 +98,11 @@ export const Home = () => {
             </Typography>
           </Box>
 
-          <Button variant='contained' color='secondary'>
-            Conoce más sobre nosotros
-          </Button>
+          <Link href='/about'>
+            <Button variant='contained' color='secondary'>
+              {t('constants.navigation.learnMore')}
+            </Button>
+          </Link>
         </Box>
 
         {!isMobile && (
@@ -360,9 +361,11 @@ export const Home = () => {
                 {entry?.fields.descripcionAnuncio}
               </Typography>
 
-              <Button variant='contained' color='secondary'>
-                Learn More
-              </Button>
+              <Link href='/about'>
+                <Button variant='contained' color='secondary'>
+                  {t('constants.navigation.learnMore')}
+                </Button>
+              </Link>
             </Box>
           </Box>
         </Box>

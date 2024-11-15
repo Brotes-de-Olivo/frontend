@@ -2,7 +2,7 @@ import {createRoot} from 'react-dom/client'
 import {ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from '@apollo/client'
 import {setContext} from '@apollo/client/link/context'
 import {Toaster} from 'react-hot-toast'
-
+import './i18n'
 import './index.css'
 import App from 'App'
 import {BrowserRouter} from 'react-router-dom'

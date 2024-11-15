@@ -19,6 +19,7 @@ import {SEND_EMAIL} from 'api'
 import {useMutation} from '@apollo/client'
 import toast from 'react-hot-toast'
 import {useBreakpoint} from 'hooks'
+import {useTranslation} from 'react-i18next'
 
 const CONTACT_NUMBER = '+506 2240 8655'
 
@@ -63,6 +64,7 @@ export const Contact = () => {
   const [sendEmail, {loading}] = useMutation(SEND_EMAIL)
   const [validForm, setValidForm] = useState(false)
   const {isMobile} = useBreakpoint()
+  const {t} = useTranslation()
 
   const handleSend = () => {
     try {
@@ -165,7 +167,7 @@ export const Contact = () => {
               fontWeight: 'medium',
             }}
           >
-            Pongámonos en Contacto
+            {t('contact.title')}
           </Typography>
           <Typography
             variant='body1'
@@ -174,7 +176,7 @@ export const Contact = () => {
               fontWeight: 'medium',
             }}
           >
-            O, puede mandarnos un correo a
+            {t('contact.description')}
             <Link
               href='mailto:hogarbrotesdeolivo@gmail.com'
               sx={{
@@ -207,7 +209,7 @@ export const Contact = () => {
                   onChange={handleInputChange}
                   error={Boolean(errors?.name)}
                   helperText={errors?.name}
-                  label='Nombre'
+                  label={t('contact.labels.name')}
                   slotProps={{
                     input: {
                       startAdornment: (
@@ -228,7 +230,7 @@ export const Contact = () => {
                   onChange={handleInputChange}
                   error={Boolean(errors?.lastName)}
                   helperText={errors?.lastName}
-                  label='Apellido'
+                  label={t('contact.labels.lastName')}
                   slotProps={{
                     input: {
                       startAdornment: (
@@ -250,7 +252,7 @@ export const Contact = () => {
                 onChange={handleInputChange}
                 error={Boolean(errors?.email)}
                 helperText={errors?.email}
-                label='Correo'
+                label={t('contact.labels.email')}
                 slotProps={{
                   input: {
                     startAdornment: (
@@ -271,7 +273,7 @@ export const Contact = () => {
                 onChange={handleInputChange}
                 error={Boolean(errors?.phoneNo)}
                 helperText={errors?.phoneNo}
-                label='Teléfono'
+                label={t('contact.labels.phoneNo')}
                 slotProps={{
                   input: {
                     startAdornment: (
@@ -292,7 +294,7 @@ export const Contact = () => {
                 onChange={handleInputChange}
                 error={Boolean(errors?.message)}
                 helperText={errors?.message}
-                label='Mensaje'
+                label={t('contact.labels.message')}
                 multiline
                 rows={4}
               />
@@ -318,7 +320,7 @@ export const Contact = () => {
                 disabled={loading || !validForm}
                 endIcon={loading ? <CircularProgress size={20} /> : undefined}
               >
-                {loading ? 'Enviando' : 'Enviar'}
+                {loading ? 'Enviando' : t('contact.buttons.send')}
               </Button>
             </Box>
           </Box>
@@ -347,7 +349,7 @@ export const Contact = () => {
           }}
         >
           <Typography variant='h2' sx={{color: COLORS.PRIMARY.D1, fontWeight: 'medium'}}>
-            ¿Dónde nos encontramos?{' '}
+            {t('contact.locationTitle')}{' '}
           </Typography>
 
           <Box
@@ -363,8 +365,7 @@ export const Contact = () => {
             }}
           >
             <Typography variant='body1' sx={{color: COLORS.BASE.BLACK, fontWeight: 'medium'}}>
-              La Florida de Tibás, de Rostipollos 300 Norte, 100 Oeste y 25 Norte o Apartado Postal
-              1450-1100 , San José, Costa Rica
+              {t('contact.address')}
             </Typography>
 
             <Button
@@ -374,7 +375,7 @@ export const Contact = () => {
               }}
               onClick={handleWazeClick}
             >
-              Indicaciones
+              {t('contact.buttons.openWaze')}
               <Image
                 src={Waze}
                 alt='Waze'
@@ -417,7 +418,7 @@ export const Contact = () => {
             fontWeight: 'medium',
           }}
         >
-          Llámenos directamente
+          {t('contact.callUs')}
         </Typography>
 
         <Typography
@@ -427,7 +428,7 @@ export const Contact = () => {
             fontWeight: 'medium',
           }}
         >
-          Estamos disponibles de Lunes a Viernes de 8:00 a.m. a 5:00 p.m.
+          {t('contact.availability')}
         </Typography>
 
         <Typography
@@ -437,7 +438,7 @@ export const Contact = () => {
             fontWeight: 'medium',
           }}
         >
-          <Link href='tel:+50622408655'>+506 2240 8655</Link>
+          <Link href='tel:+50622408655'>{CONTACT_NUMBER}</Link>
         </Typography>
       </Box>
     </>

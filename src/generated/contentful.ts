@@ -4,9 +4,6 @@ import { Asset, Entry } from "contentful";
 import { Document } from "@contentful/rich-text-types";
 
 export interface IAnuncioFields {
-  /** Autor */
-  autor: IAutor;
-
   /** Título */
   titulo: string;
 
@@ -185,6 +182,9 @@ export interface IPaginaPrincipalFields {
 
   /** Tercer Subtitulo */
   tercerSubtitulo: string;
+
+  /** TituloEntry */
+  tituloEntry: "Página Principal";
 }
 
 /** Información desplegada en la página principal */
@@ -257,6 +257,6 @@ export type CONTENT_TYPE =
   | "paginaPrincipal"
   | "sobreNosotros";
 
-export type LOCALE_CODE = "en-US";
+export type LOCALE_CODE = "en-US" | "es";
 
 export type CONTENTFUL_DEFAULT_LOCALE_CODE = "en-US";

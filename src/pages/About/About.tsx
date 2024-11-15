@@ -1,8 +1,9 @@
 import {Box, Typography, Button, Grid, List, ListItem, CircularProgress} from '@mui/material'
 import {COLORS} from '../../theme/colors'
-import {Gallery, StaggeredBackgroundImage} from '../../components'
+import {Gallery, Link, StaggeredBackgroundImage} from '../../components'
 import {EntryTypes, useBreakpoint, useContentful} from '../../hooks'
 import {useEffect, useState} from 'react'
+import {useTranslation} from 'react-i18next'
 
 export const About = () => {
   const {isMobile} = useBreakpoint()
@@ -10,11 +11,18 @@ export const About = () => {
   const [entry, setEntry] = useState<EntryTypes['SobreNosotros'] | null>(null)
   const [entryGallery, setEntryGallery] = useState<EntryTypes['Gallery'] | null>(null)
   const [loading, setLoading] = useState(true)
+  const {t, i18n} = useTranslation()
 
   useEffect(() => {
     const fetchData = async () => {
-      const entry = await getEntry('K5mRgNQrWMRedJUqNDNaV')
-      const entryGallery = await getEntry('43ziZHbqZntTuOtba5C3HV')
+      const entry = await getEntry({
+        entryId: 'K5mRgNQrWMRedJUqNDNaV',
+        locale: i18n.language,
+      })
+      const entryGallery = await getEntry({
+        entryId: '43ziZHbqZntTuOtba5C3HV',
+        locale: i18n.language,
+      })
 
       setEntry(entry as EntryTypes['SobreNosotros'])
       setEntryGallery(entryGallery as EntryTypes['Gallery'])
@@ -22,7 +30,7 @@ export const About = () => {
       setLoading(false)
     }
     fetchData()
-  }, [])
+  }, [i18n.language])
 
   if (loading) {
     return (
@@ -67,7 +75,7 @@ export const About = () => {
             color: COLORS.PRIMARY.D1,
           }}
         >
-          Sobre Nosotros
+          {t('aboutUs.title')}
         </Typography>
         <Typography
           variant='body1'
@@ -77,7 +85,11 @@ export const About = () => {
         >
           {entry?.fields.descripcionPrincipal}
         </Typography>
-        <Button variant='contained'>Contáctenos</Button>
+        <Link href='/contact'>
+          <Button variant='contained'>
+            <Typography>{t('constants.navigation.contact')}</Typography>
+          </Button>
+        </Link>
       </Box>
 
       {/* Mission & Vision Section */}
@@ -117,7 +129,7 @@ export const About = () => {
               color: COLORS.PRIMARY.D1,
             }}
           >
-            Nuestra Misión
+            {t('aboutUs.ourMission')}
           </Typography>
           <Typography variant='body1'>{entry?.fields.nuestraMision}</Typography>
         </Box>
@@ -148,7 +160,7 @@ export const About = () => {
               color: COLORS.SECONDARY.D1,
             }}
           >
-            Nuestra Visión
+            {t('aboutUs.ourVision')}
           </Typography>
           <Typography variant='body1'>{entry?.fields.nuestraVision}</Typography>
         </Box>
@@ -183,7 +195,7 @@ export const About = () => {
             color: COLORS.PRIMARY.D2,
           }}
         >
-          Nuestra Historia
+          {t('aboutUs.ourHistory')}
         </Typography>
         <Typography variant='body1' sx={{textAlign: 'left'}}>
           {entry?.fields.nuestraHistoria}
@@ -210,7 +222,7 @@ export const About = () => {
           }}
         >
           <Typography variant='h4' sx={{color: COLORS.SECONDARY.D1}}>
-            Servicios
+            {t('aboutUs.ourServices')}
           </Typography>
           <Typography variant='body1'>{entry?.fields.descripcionServicios}</Typography>
         </Box>
@@ -262,7 +274,7 @@ export const About = () => {
             padding: '1rem',
           }}
         >
-          Galería
+          {t('aboutUs.gallery')}
         </Typography>
 
         <Gallery images={entryGallery?.fields.photos} speed={500} />

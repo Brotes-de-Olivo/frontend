@@ -4,6 +4,7 @@ import {CollectionTypes, useBreakpoint, useContentful} from 'hooks'
 import {useEffect, useState} from 'react'
 import {COLORS} from 'theme/colors'
 import Waze from 'assets/waze.webp'
+import {useTranslation} from 'react-i18next'
 
 const ActivityIndicator = ({active}: {active: boolean}) => {
   return (
@@ -23,11 +24,13 @@ export const News = () => {
   const [loading, setLoading] = useState(true)
   const {isMobile} = useBreakpoint()
   const [news, setNews] = useState<CollectionTypes['Anuncio']>([])
+  const {t, i18n} = useTranslation()
 
   useEffect(() => {
     const fetchData = async () => {
       getCollection({
         contentType: 'anuncio',
+        locale: i18n.language,
       }).then((news) => {
         setNews(news)
 
@@ -36,10 +39,10 @@ export const News = () => {
     }
 
     fetchData()
-  }, [])
+  }, [getCollection, i18n.language])
 
   const renderNiceDate = ({date, short}: {date: string; short?: boolean}) => {
-    return new Date(date).toLocaleDateString('es-ES', {
+    return new Date(date).toLocaleDateString(i18n.language, {
       year: 'numeric',
       month: short ? 'short' : 'long',
       day: 'numeric',
@@ -82,7 +85,7 @@ export const News = () => {
             color: COLORS.PRIMARY.D1,
           }}
         >
-          No hay anuncios disponibles
+          {t('news.noNews')}
         </Typography>
       </Box>
     )
@@ -108,7 +111,7 @@ export const News = () => {
             color: COLORS.PRIMARY.D1,
           }}
         >
-          Último anuncio
+          {t('news.latestNews')}
         </Typography>
 
         <Box
@@ -153,46 +156,6 @@ export const News = () => {
                 gap: 1,
               }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: 1,
-                  alignItems: 'center',
-                }}
-              >
-                <Image
-                  src={news[0]?.fields.autor.fields.imagenDePerfil.fields.file.url}
-                  alt={news[0]?.fields.autor.fields.imagenDePerfil.fields.title}
-                  sx={{
-                    width: 32,
-                    height: 32,
-                    objectFit: 'cover',
-                    borderRadius: '50%',
-                  }}
-                />
-
-                <Typography
-                  variant='body1'
-                  sx={{
-                    fontWeight: 'regular',
-                    color: COLORS.PRIMARY.D1,
-                  }}
-                >
-                  {news[0]?.fields.autor.fields.nombre} {news[0]?.fields.autor.fields.apellido},{' '}
-                  <Typography
-                    variant='body1'
-                    sx={{
-                      fontWeight: 'regular',
-                      color: COLORS.BASE.DARK_GRAY,
-                    }}
-                    component='span'
-                  >
-                    {news[0]?.fields.autor.fields.cargo}
-                  </Typography>
-                </Typography>
-              </Box>
-
               <Typography
                 variant='h4'
                 sx={{
@@ -233,7 +196,7 @@ export const News = () => {
                 }}
               >
                 <ActivityIndicator active={news[0]?.fields.activo} />
-                {news[0]?.fields.activo ? 'Activo' : 'Inactivo'}
+                {news[0]?.fields.activo ? t('news.active') : t('news.inactive')}
               </Typography>
               <Typography
                 variant='body1'
@@ -242,7 +205,7 @@ export const News = () => {
                   color: COLORS.BASE.DARK_GRAY,
                 }}
               >
-                Fecha del evento: {renderNiceDate({date: news[0]?.fields.fechaDeEvento})}
+                {t('news.eventDate')} {renderNiceDate({date: news[0]?.fields.fechaDeEvento})}
               </Typography>
 
               {news[0]?.fields.ubicacion && (
@@ -253,7 +216,7 @@ export const News = () => {
                   }}
                   onClick={() => handleWazeClick(news[0]?.fields.ubicacion)}
                 >
-                  Indicaciones
+                  {t('news.openWaze')}
                   <Image
                     src={Waze}
                     alt='Waze'
@@ -295,7 +258,7 @@ export const News = () => {
             color: COLORS.PRIMARY.D1,
           }}
         >
-          Todos los anuncios
+          {t('news.allNews')}
         </Typography>
 
         <Grid2
@@ -334,80 +297,37 @@ export const News = () => {
                   alignItems: 'center',
                 }}
               >
+                <Typography
+                  variant='body1'
+                  sx={{
+                    fontWeight: 'regular',
+                    color: COLORS.BASE.DARK_GRAY,
+                    textAlign: 'right',
+                  }}
+                >
+                  {renderNiceDate({date: n.fields.fechaDeEvento, short: true})}
+                </Typography>
+
                 <Box
                   sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     gap: 1,
                     alignItems: 'center',
-                    width: '60%',
+                    justifyContent: 'flex-end',
                   }}
                 >
-                  <Image
-                    src={n.fields.autor.fields.imagenDePerfil.fields.file.url}
-                    alt={n.fields.autor.fields.imagenDePerfil.fields.title}
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      objectFit: 'cover',
-                      borderRadius: '50%',
-                    }}
-                  />
+                  <ActivityIndicator active={n.fields.activo} />
 
-                  <Typography
-                    variant='body1'
-                    sx={{
-                      fontWeight: 'regular',
-                      color: COLORS.PRIMARY.D1,
-                      lineHeight: 1,
-                    }}
-                  >
-                    {n.fields.autor.fields.nombre} {n.fields.autor.fields.apellido},{' '}
-                    <Typography
-                      variant='body1'
-                      sx={{
-                        fontWeight: 'regular',
-                        color: COLORS.BASE.DARK_GRAY,
-                      }}
-                    >
-                      {n.fields.autor.fields.cargo}
-                    </Typography>
-                  </Typography>
-                </Box>
-
-                <Box>
                   <Typography
                     variant='body1'
                     sx={{
                       fontWeight: 'regular',
                       color: COLORS.BASE.DARK_GRAY,
-                      textAlign: 'right',
                     }}
                   >
-                    {renderNiceDate({date: n.fields.fechaDeEvento, short: true})}
+                    {n.fields.activo ? t('news.active') : t('news.inactive')}
                   </Typography>
-
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: 1,
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                    }}
-                  >
-                    <ActivityIndicator active={n.fields.activo} />
-
-                    <Typography
-                      variant='body1'
-                      sx={{
-                        fontWeight: 'regular',
-                        color: COLORS.BASE.DARK_GRAY,
-                      }}
-                    >
-                      {n.fields.activo ? 'Activo' : 'Inactivo'}
-                    </Typography>
-                  </Box>
                 </Box>
               </Box>
 
@@ -438,7 +358,7 @@ export const News = () => {
                   }}
                   onClick={() => handleWazeClick(n.fields.ubicacion)}
                 >
-                  Indicaciones
+                  {t('news.openWaze')}
                   <Image
                     src={Waze}
                     alt='Waze'

@@ -1,0 +1,56 @@
+{
+  "contact": {
+    "title": "Pongámonos en contacto",
+    "description": "o, puede mandarnos un correo a",
+    "locationTitle": "¿Dónde nos encontramos?",
+    "address": "La Florida de Tibás, de Rostipollos 300 Norte, 100 Oeste y 25 Norte o Apartado Postal 1450-1100 , San José, Costa Rica",
+    "callUs": "Llámenos directamente",
+    "availability": "Estamos disponibles de Lunes a Viernes de 8:00 a.m. a 5:00 p.m.",
+    "labels": {
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "phoneNo": "Número de teléfono",
+      "message": "Mensaje"
+    },
+    "buttons": {
+      "send": "Enviar",
+      "sending": "Enviando",
+      "openWaze": "Abrir en Waze"
+    }
+  },
+  "footer": {
+    "email": "Email",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "addressValue": "La Florida de Tibás, de Rostipollos 300 Norte, 100 Oeste y 25 Norte o Apartado Postal 1450-1100 , San José, Costa Rica"
+  },
+  "aboutUs": {
+    "title": "Sobre nosotros",
+    "ourMission": "Nuestra misión",
+    "ourVision": "Nuestra visión",
+    "ourHistory": "Nuestra historia",
+    "ourServices": "Nuestros servicios",
+    "gallery": "Galería"
+  },
+  "news": {
+    "latestNews": "Último anuncio",
+    "allNews": "Todos los anuncios",
+    "eventDate": "Fecha del evento",
+    "openWaze": "Abrir en Waze",
+    "readMore": "Leer más",
+    "noNews": "No hay anuncios disponibles",
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "constants": {
+    "navigation": {
+      "home": "Inicio",
+      "about": "Sobre nosotros",
+      "news": "Anuncios",
+      "contact": "Contáctenos",
+      "backHome": "Volver al inicio",
+      "learnMore": "Aprende más sobre nosotros"
+    }
+  }
+}
