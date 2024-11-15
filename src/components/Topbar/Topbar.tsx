@@ -151,7 +151,7 @@ export const Topbar = () => {
                       textTransform: 'none',
                     }}
                   >
-                    Contáctenos
+                    {t('constants.navigation.contact')}
                   </Button>
                 </Link>
                 <Select
