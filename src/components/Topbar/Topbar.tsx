@@ -1,16 +1,32 @@
-import {AppBar, Box, Button, Drawer, IconButton, Toolbar} from '@mui/material'
-import {NAVIGATION_LINKS, ROUTES, TOPBAR_HEIGHT} from '../../constants'
+import {
+  AppBar,
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Toolbar,
+} from '@mui/material'
+import {ROUTES, TOPBAR_HEIGHT} from '../../constants'
 import {Link} from '../Link'
 import {COLORS} from '../../theme/colors'
 import {useBreakpoint} from '../../hooks/useBreakpoint'
 import {Menu, MenuOpen, ConnectWithoutContact} from '@mui/icons-material'
 import {useEffect, useState} from 'react'
 import {useLocation} from 'react-router-dom'
+import {useIntlNavigationLinks} from 'hooks'
+import {useTranslation} from 'react-i18next'
+import es from 'assets/es.png'
+import en from 'assets/en.png'
 
 export const Topbar = () => {
   const [open, setOpen] = useState(false)
   const {isMobile} = useBreakpoint()
   const location = useLocation()
+  const navigationLinks = useIntlNavigationLinks()
+  const {t, i18n} = useTranslation()
 
   const handleDrawer = () => setOpen(!open)
 
@@ -21,6 +37,11 @@ export const Topbar = () => {
   useEffect(() => {
     setOpen(false)
   }, [location])
+
+  const handleChangeLanguage = (event: SelectChangeEvent<string>) => {
+    const language = event.target.value as string
+    i18n.changeLanguage(language)
+  }
 
   return (
     <AppBar
@@ -106,7 +127,7 @@ export const Topbar = () => {
                   width: '100%',
                 }}
               >
-                {NAVIGATION_LINKS.map(({href, label}) => (
+                {navigationLinks.map(({href, label}) => (
                   <Link key={href} href={href}>
                     <Button
                       variant='text'
@@ -133,6 +154,53 @@ export const Topbar = () => {
                     Contáctenos
                   </Button>
                 </Link>
+                <Select
+                  variant='outlined'
+                  value={i18n.language}
+                  onChange={handleChangeLanguage}
+                  sx={{
+                    backgroundColor: COLORS.BASE.WHITE,
+                    color: COLORS.PRIMARY.D2,
+                    borderRadius: '8px',
+                    '> div': {
+                      padding: '8px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '16px',
+                    },
+                  }}
+                >
+                  <MenuItem
+                    value='es'
+                    sx={{
+                      gap: '16px',
+                    }}
+                  >
+                    Español
+                    <img
+                      src={es}
+                      alt='es'
+                      style={{
+                        borderRadius: '50%',
+                        objectFit: 'fill',
+                        height: '20px',
+                        justifyContent: 'space-between',
+                      }}
+                    />
+                  </MenuItem>
+                  <MenuItem
+                    value='en-US'
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '16px',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    English <img src={en} alt='en' style={{width: '20px'}} />
+                  </MenuItem>
+                </Select>
               </Box>
             </Drawer>
           </>
@@ -155,7 +223,7 @@ export const Topbar = () => {
                 />
               </Link>
 
-              {NAVIGATION_LINKS.map(({href, label}) => (
+              {navigationLinks.map(({href, label}) => (
                 <Link key={href} href={href}>
                   <Button
                     variant='text'
@@ -171,20 +239,84 @@ export const Topbar = () => {
               ))}
             </Box>
 
-            <Link href={ROUTES.contact}>
-              <Button
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+              }}
+            >
+              <Link href={ROUTES.contact}>
+                <Button
+                  variant='outlined'
+                  sx={{
+                    color: COLORS.BASE.WHITE,
+                    fontSize: '18px',
+                    textTransform: 'none',
+                    borderColor: COLORS.BASE.WHITE,
+                    borderRadius: '15px',
+                  }}
+                >
+                  {t('constants.navigation.contact')}
+                </Button>
+              </Link>
+
+              <Select
                 variant='outlined'
+                value={i18n.language}
+                onChange={handleChangeLanguage}
                 sx={{
+                  borderRadius: '8px',
+                  '> div': {
+                    padding: '8px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '16px',
+                  },
+                  border: '1px solid white',
+                  '> svg': {
+                    color: COLORS.BASE.WHITE,
+                  },
+                }}
+                style={{
                   color: COLORS.BASE.WHITE,
-                  fontSize: '18px',
-                  textTransform: 'none',
+                  borderWidth: '2px',
                   borderColor: COLORS.BASE.WHITE,
                   borderRadius: '15px',
+                  height: '100%',
                 }}
               >
-                Contáctenos
-              </Button>
-            </Link>
+                <MenuItem
+                  value='es'
+                  sx={{
+                    gap: '16px',
+                  }}
+                >
+                  <img
+                    src={es}
+                    alt='es'
+                    style={{
+                      borderRadius: '50%',
+                      objectFit: 'fill',
+                      height: '20px',
+                      justifyContent: 'space-between',
+                    }}
+                  />
+                </MenuItem>
+                <MenuItem
+                  value='en-US'
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <img src={en} alt='en' style={{width: '20px'}} />
+                </MenuItem>
+              </Select>
+            </Box>
           </Box>
         )}
       </Toolbar>

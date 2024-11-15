@@ -1,6 +1,6 @@
 import {Routes, Route, Navigate} from 'react-router-dom'
 import {About, Contact, Error, Home, News} from '../pages'
-import {Footer, Topbar} from '../components'
+import {BackToTop, Footer, Topbar} from '../components'
 import {Container} from '@mui/material'
 import {TOPBAR_HEIGHT} from '../constants'
 
@@ -26,6 +26,8 @@ export const Router = () => {
           <Route path='*' element={<Navigate replace to='/error' />} />
         </Routes>
       </Container>
+
+      <BackToTop />
       <Footer />
     </>
   )

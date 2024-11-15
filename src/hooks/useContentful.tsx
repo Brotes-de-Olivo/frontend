@@ -7,6 +7,7 @@ import {
   IGalleryFields,
   IAnuncioFields,
 } from '../generated/contentful'
+import {useTranslation} from 'react-i18next'
 
 export interface EntryTypes {
   Inicio: Entry<IPaginaPrincipalFields>
@@ -43,18 +44,22 @@ export const useContentful = () => {
     environment: import.meta.env.VITE_CONTENTFUL_ENVIRONMENT as string,
   })
 
-  const getEntry = async (entryId: string) => await client.getEntry(entryId)
+  const getEntry = async ({entryId, locale}: {entryId: string; locale?: string}) =>
+    await client.getEntry(entryId, {locale})
 
   const getEntryByTitle = async <ContentType extends keyof ContentTypes>({
     contentType,
     title,
+    locale,
   }: {
     contentType: ContentType
     title: string
+    locale?: string
   }) => {
     const entries = await client.getEntries<ContentTypes[ContentType]>({
       content_type: contentType,
       'fields.slug[match]': title,
+      locale,
     })
 
     return entries.items[0]
@@ -64,15 +69,18 @@ export const useContentful = () => {
     contentType,
     limit,
     order = ORDER_CRITERIA.DESC,
+    locale,
   }: {
     contentType: ContentType
     limit?: number
     order?: string
+    locale?: string
   }) => {
     const entries = await client.getEntries<ContentTypes[ContentType]>({
       content_type: contentType,
       limit,
-      order: order,
+      order,
+      locale,
     })
 
     return entries.items

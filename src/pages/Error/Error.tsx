@@ -2,8 +2,10 @@ import {Box, Button} from '@mui/material'
 import {Navigate, Route, Routes} from 'react-router-dom'
 import {Error404, Error500} from './Errors'
 import {Link} from '../../components'
+import {useTranslation} from 'react-i18next'
 
 export const Error = () => {
+  const {t} = useTranslation()
   return (
     <Box>
       <Routes>
@@ -20,7 +22,7 @@ export const Error = () => {
         }}
       >
         <Link href='/'>
-          <Button>Go home</Button>
+          <Button>{t('constants.navigation.backHome')}</Button>
         </Link>
       </Box>
     </Box>

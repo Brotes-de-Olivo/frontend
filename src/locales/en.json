@@ -1,0 +1,56 @@
+{
+  "contact": {
+    "title": "Get in touch",
+    "description": "Or, you can send us an email at",
+    "locationTitle": "Where are we?",
+    "address": "La Florida de Tibás, 300 North of Rostipollos, 100 West and 25 North or PO Box 1450-1100, San José, Costa Rica",
+    "callUs": "Call us directly",
+    "availability": "We are available from Monday to Friday from 8:00 a.m. to 5:00 p.m.",
+    "labels": {
+      "name": "Name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phoneNo": "Phone number",
+      "message": "Message"
+    },
+    "buttons": {
+      "send": "Send",
+      "sending": "Sending",
+      "openWaze": "Open in Waze"
+    }
+  },
+  "aboutUs": {
+    "title": "About us",
+    "ourMission": "Our mission",
+    "ourVision": "Our vision",
+    "ourHistory": "Our history",
+    "ourServices": "Our services",
+    "gallery": "Gallery"
+  },
+  "news": {
+    "latestNews": "Latest news",
+    "allNews": "All news",
+    "eventDate": "Event date",
+    "openWaze": "Open in Waze",
+    "readMore": "Read more",
+    "noNews": "No news available",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "footer": {
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "addressValue": "La Florida de Tibás, 300 North of Rostipollos, 100 West and 25 North or PO Box 1450-1100, San José, Costa Rica"
+  },
+  "constants": {
+    "navigation": {
+      "home": "Home",
+      "about": "About us",
+      "news": "News",
+      "contact": "Contact us",
+      "backHome": "Back to home",
+      "learnMore": "Learn more about us"
+    }
+  }
+}

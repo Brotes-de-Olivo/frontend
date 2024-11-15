@@ -11,9 +11,9 @@ export const NAVIGATION_LINKS: {
   label: string
   href: string
 }[] = [
-  {label: 'Inicio', href: ROUTES.home},
-  {label: 'Sobre Nosotros', href: ROUTES.about},
-  {label: 'Avisos', href: ROUTES.news},
+  {label: 'home', href: ROUTES.home},
+  {label: 'about', href: ROUTES.about},
+  {label: 'news', href: ROUTES.news},
 ]
 
 export const BREAKPOINTS_VALUE = {

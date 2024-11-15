@@ -1,21 +1,31 @@
-import {Box, Button, Typography} from '@mui/material'
+import {Box, Button, MenuItem, Select, SelectChangeEvent, Typography} from '@mui/material'
 import {Link} from '../Link'
-import {NAVIGATION_LINKS, ROUTES} from '../../constants'
+import {ROUTES} from '../../constants'
 import {COLORS} from '../../theme/colors'
 import {useBreakpoint} from '../../hooks/useBreakpoint'
-
-const footerInfo = [
-  {key: 'Email', value: 'hogarbrotesdeolivo@gmail.com'},
-  {key: 'Teléfono', value: '(506) 2240 8655'},
-  {
-    key: 'Dirección',
-    value:
-      'La Florida de Tibás, de Rostipollos 300 Norte, 100 Oeste y 25 Norte o Apartado Postal 1450-1100 , San José, Costa Rica',
-  },
-]
+import {useTranslation} from 'react-i18next'
+import {useIntlNavigationLinks} from 'hooks'
+import {useState} from 'react'
+import es from 'assets/es.png'
+import en from 'assets/en.png'
 
 export const Footer = () => {
   const {isMobile} = useBreakpoint()
+  const {t, i18n} = useTranslation()
+  const navigationLinks = useIntlNavigationLinks()
+  const [footerInfo, setFooterInfo] = useState([
+    {key: t('footer.email'), value: 'hogarbrotesdeolivo@gmail.com'},
+    {key: t('footer.phone'), value: '(506) 2240 8655'},
+    {
+      key: t('footer.address'),
+      value: t('footer.addressValue'),
+    },
+  ])
+
+  const handleChangeLanguage = (event: SelectChangeEvent<string>) => {
+    const language = event.target.value as string
+    i18n.changeLanguage(language)
+  }
 
   return (
     <Box
@@ -59,7 +69,7 @@ export const Footer = () => {
         </Box>
 
         <Box>
-          {NAVIGATION_LINKS.map(({href, label}) => (
+          {navigationLinks.map(({href, label}) => (
             <Link key={href} href={href}>
               <Button
                 variant='text'
@@ -115,6 +125,72 @@ export const Footer = () => {
             </Box>
           </Box>
         ))}
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '16px',
+          }}
+        >
+          <Select
+            variant='outlined'
+            value={i18n.language}
+            onChange={handleChangeLanguage}
+            sx={{
+              borderRadius: '8px',
+              '> div': {
+                padding: '8px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '16px',
+              },
+              border: '1px solid white',
+              '> svg': {
+                color: COLORS.BASE.WHITE,
+              },
+            }}
+            style={{
+              color: COLORS.BASE.WHITE,
+              borderWidth: '2px',
+              borderColor: COLORS.BASE.WHITE,
+              borderRadius: '15px',
+              height: '100%',
+            }}
+          >
+            <MenuItem
+              value='es'
+              sx={{
+                gap: '16px',
+              }}
+            >
+              Español
+              <img
+                src={es}
+                alt='es'
+                style={{
+                  borderRadius: '50%',
+                  objectFit: 'fill',
+                  height: '20px',
+                  justifyContent: 'space-between',
+                }}
+              />
+            </MenuItem>
+            <MenuItem
+              value='en-US'
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                justifyContent: 'space-between',
+              }}
+            >
+              English <img src={en} alt='en' style={{width: '20px'}} />
+            </MenuItem>
+          </Select>
+        </Box>
       </Box>
 
       <Box>
