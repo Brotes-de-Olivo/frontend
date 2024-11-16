@@ -174,6 +174,9 @@ export const Topbar = () => {
                   <MenuItem
                     value='es'
                     sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
                       gap: '16px',
                     }}
                   >
